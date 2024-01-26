@@ -1,0 +1,28 @@
+1. index.php (Página Inicial):
+Crie a estrutura HTML básica.
+Inclua links para seus arquivos CSS e JavaScript.
+Adicione seções para exibir informações ou funcionalidades principais do sistema.
+2. /css/style.css:
+Defina estilos para elementos comuns, como cabeçalho, rodapé, botões, etc.
+Personalize o layout e a aparência geral do sistema.
+3. /js/script.js:
+Implemente funcionalidades interativas usando JavaScript, como validação de formulários ou atualizações dinâmicas de página.
+4. /includes/header.php, /includes/footer.php:
+header.php: Inclua o cabeçalho HTML com o menu de navegação e qualquer outra informação que seja exibida em todas as páginas.
+footer.php: Adicione o rodapé com informações de copyright, links úteis, etc.
+5. /php/conexao.php:
+Configure a conexão com o banco de dados MySQL.
+Defina constantes ou variáveis para informações de conexão, como host, nome de usuário, senha e nome do banco de dados.
+6. /php/reservas.php:
+Implemente funções para lidar com reservas, como criar, listar, aprovar ou cancelar.
+Conecte-se ao banco de dados e execute consultas SQL conforme necessário.
+7. /php/administracao.php:
+Desenvolva funcionalidades administrativas, como visualização de todas as reservas, cancelamento ou aprovação de reservas.
+Utilize consultas SQL para interagir com o banco de dados.
+8. /templates/reserva.php, /templates/administracao.php:
+reserva.php: Crie a página para que os usuários façam reservas.
+administracao.php: Desenvolva a página para a administração visualizar e gerenciar as reservas.
+9. config.php:
+Configure informações específicas do projeto, como URL base ou configurações globais.
+10. .gitignore:
+Adicione padrões de arquivos que devem ser ignorados pelo controle de versão (por exemplo, arquivos de configuração sensíveis).
