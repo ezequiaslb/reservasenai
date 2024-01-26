@@ -17,15 +17,15 @@ if (!isset($_SESSION['usuario_logado'])) {
         <div class="text-center mt-4">
             <h2>Login</h2>
             <div class="row justify-content-center">
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <form action="login.php" method="post">
                         <div class="form-group">
                             <label for="username" class="sr-only"></label>
-                            <input type="text" id="username" name="username" class="form-control form-control-sm" placeholder="Nome de Usuário" required>
+                            <input type="text" id="username" name="username" class="form-control" placeholder="Nome de Usuário" required>
                         </div>
                         <div class="form-group">
                             <label for="password" class="sr-only"></label>
-                            <input type="password" id="password" name="password" class="form-control form-control-sm" placeholder="Senha" required>
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required>
                         </div>
                         <button type="submit" class="btn btn-primary mt-5">Entrar</button>
                     </form>
