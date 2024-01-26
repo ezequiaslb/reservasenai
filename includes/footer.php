@@ -3,7 +3,7 @@
 <!-- Rodapé -->
 <footer class="footer mt-4">
     <div class="container text-center">
-        <p>&copy; 2024 Sistema de Reservas. Todos os direitos reservados.</p>
+        <p>&copy; 2024 Sistema de Reservas.</p>
     </div>
 </footer>
 

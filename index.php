@@ -9,13 +9,10 @@ if (!isset($_SESSION['usuario_logado'])) {
     <!-- Conteúdo da Página Inicial -->
     <div class="jumbotron">
         <h1 class="display-4 row justify-content-center">Sistema de Reservas</h1>
-        <p class="lead row justify-content-center">Faça suas reservas de salas e equipamentos</p>
-        <hr class="my-4">
-        
+        <p class="lead row justify-content-center">Faça login para continuar</p>        
         
         <!-- Formulário de Login Centralizado -->
         <div class="text-center mt-4">
-            <h2>Login</h2>
             <div class="row justify-content-center">
                 <div class="col-md-4">
                     <form action="login.php" method="post">

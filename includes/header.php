@@ -27,10 +27,10 @@
                     <a class="nav-link" href="#">Página Inicial</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Reservas</a>
+                    <a class="nav-link" href="templates/reserva.php">Reservas</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Administração</a>
+                    <a class="nav-link" href="../templates/administracao.php">Administração</a>
                 </li>
             </ul>
         </div>
