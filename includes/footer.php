@@ -1,7 +1,7 @@
 </div> <!-- Fim do conteúdo principal -->
 
 <!-- Rodapé -->
-<footer class="footer mt-4">
+<footer class="footer mt-4 bg-light">
     <div class="container text-center">
         <p>&copy; 2024 Sistema de Reservas.</p>
     </div>
