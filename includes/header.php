@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="/reservasenai/css/bootstrap.min.css">
     <script src="/reservasenai/js/jquery.min.js"></script>
     <script src="/reservasenai/js/bootstrap.min.js"></script>
-     <script src="/reservasenai/js/script.js"></script>
+    <script src="/reservasenai/js/script.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
 </head>
 <body>
 

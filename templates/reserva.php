@@ -3,6 +3,18 @@
 include('../includes/header.php');
 ?>
 
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+    </script>
+
 <!-- Conteúdo da Página de Reservas -->
 <div class="container mt-4">
     <h1 class="mb-4">Suas Reservas</h1>
@@ -30,31 +42,40 @@ include('../includes/header.php');
     </div>
 
     <!-- Formulário para Nova Reserva -->
-    <h2>Fazer Nova Reserva</h2>
+    <div class="container mt-4">
+    <h1 class="mb-4">Reservar Sala ou Equipamento</h1>
     <div class="row">
         <div class="col-md-6">
-            <form action="#" method="post">
+            <form action="processar_reserva.php" method="post">
+            <div id="calendario">
+
+            
+            </div>
                 <div class="form-group">
-                    <label for="sala">Selecione uma Sala</label>
-                    <select class="form-control" id="sala" name="sala" required>
-                        <option value="sala1">Sala 1</option>
-                        <option value="sala2">Sala 2</option>
-                        <!-- Adicione mais opções aqui -->
+                    <label for="horario">Horário</label>
+                    <select id="horario" name="horario" class="form-control" required>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                        <option value="Noturno">Noturno</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <label for="data">Data da Reserva</label>
-                    <input type="date" class="form-control" id="data" name="data" required>
-                </div>
-                <div class="form-group">
-                    <label for="horario">Horário da Reserva</label>
-                    <input type="time" class="form-control" id="horario" name="horario" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Fazer Reserva</button>
-            </form>
+                <button type="submit" class="btn btn-primary">Reservar</button>
+            </form> 
         </div>
     </div>
 </div>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
+    </script>
+
 
 <?php
 include('../includes/footer.php');
