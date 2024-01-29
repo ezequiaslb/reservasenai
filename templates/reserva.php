@@ -3,18 +3,6 @@
 include('../includes/header.php');
 ?>
 
-    <script>
-
-      document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
-        });
-        calendar.render();
-      });
-
-    </script>
-
 <!-- Conteúdo da Página de Reservas -->
 <div class="container mt-4">
     <h1 class="mb-4">Suas Reservas</h1>
@@ -47,10 +35,7 @@ include('../includes/header.php');
     <div class="row">
         <div class="col-md-6">
             <form action="processar_reserva.php" method="post">
-            <div id="calendario">
-
-            
-            </div>
+            <input type="text" id="calendar" name="calendar" class="form-control" required>
                 <div class="form-group">
                     <label for="horario">Horário</label>
                     <select id="horario" name="horario" class="form-control" required>
@@ -64,17 +49,36 @@ include('../includes/header.php');
         </div>
     </div>
 </div>
-    <script>
-
-      document.addEventListener('DOMContentLoaded', function() {
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
+            initialView: 'dayGridMonth',
+            selectable: true,
+            businessHours: true,
+            // Outras configurações do FullCalendar aqui
+
+            // Função para lidar com seleção de datas
+            select: function(info) {
+                // info.start e info.end contêm as datas selecionadas
+                // Você pode usar essas datas para configurar o Date Range Picker
+                var startDate = info.start;
+                var endDate = info.end;
+
+                // Configurar o Date Range Picker aqui com as datas selecionadas
+                $('#calendar').daterangepicker({
+                    startDate: startDate,
+                    endDate: endDate
+                });
+
+                // Abra o Date Range Picker após a configuração
+                $('#calendar').click();
+            }
         });
         calendar.render();
-      });
+    });
+</script>
 
-    </script>
 
 
 <?php
