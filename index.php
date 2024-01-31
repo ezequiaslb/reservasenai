@@ -25,7 +25,7 @@ if (!isset($_SESSION['usuario_logado'])) {
         <div class="text-center mt-4">
             <div class="row justify-content-center">
                 <div class="col-md-4">
-                    <form action="login.php" method="post">
+                    <form action="php/login.php" method="post">
                         <div class="form-group">
                             <label for="username" class="sr-only"></label>
                             <input type="text" id="username" name="username" class="form-control" placeholder="Nome de Usuário" required>
