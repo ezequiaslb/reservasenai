@@ -26,6 +26,7 @@ include('../includes/header.php');
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" name="email" required>
+            <div class="btn-danger center" id="email-availability-message"></div><!-- Aqui exibiremos a mensagem de disponibilidade do email -->
         </div>
         <div class="form-group">
             <label for="tipousuario">Tipo de Usuário</label>
@@ -44,6 +45,31 @@ include('../includes/header.php');
         <button type="submit" class="btn btn-primary">Cadastrar</button>
     </form>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#email').on('blur', function() { // Verificar quando o usuário sai do campo de email
+        var email = $(this).val();
+        
+        if (email) {
+            $.ajax({
+                url: '../php/verificar_disponibilidade.php', // Script PHP que verificará o email
+                type: 'POST',
+                data: {email: email},
+                success: function(response) {
+                    if (response == 'disponivel') {
+                        $('#email-availability-message').html('');
+                    } else if (response == 'indisponivel') {
+                        $('#email-availability-message').html('Email já cadastrado. Por favor, escolha outro.');
+                    }
+                }
+            });
+        }
+    });
+});
+</script>
+
 
 <?php
 include('../includes/footer.php');

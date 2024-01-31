@@ -5,8 +5,8 @@ include_once('conexao.php');
 
 session_start();
 
-    if (isset($_POST['action']) && $_POST['action'] === 'cadastrar') {
-    $action = $_POST['action'];
+    $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : null);
+
        switch ($action) {
         case 'cadastrar':
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cadastrar') {
@@ -39,29 +39,83 @@ session_start();
             }
             break;
         
-        case 'editar':
-            // Lógica para editar um usuário existente
-            // Recupere os dados do formulário usando $_POST
-            // Valide os dados
-            // Atualize o usuário no banco de dados
-            // Redirecione o usuário para a página apropriada (sucesso ou erro)
-            break;
+            case 'editar':
+                if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'editar') {
+                    // Verifique se o ID do usuário está presente nos dados do formulário
+                    if (isset($_POST['id']) && is_numeric($_POST['id'])) {
+                        $usuarioId = $_POST['id'];
+                        
+                        // Recupere os dados do formulário
+                        $novoNome = $_POST['novo_nome'];
+                        $novoTipoUsuario = $_POST['novo_tipousuario'];
+                        
+                        // Atualize o usuário no banco de dados usando prepared statement
+                        $consulta = "UPDATE usuarios SET nome = ?, tipousuario = ? WHERE id = ?";
+                        $stmt = $conexao->prepare($consulta);
+                        $stmt->bind_param("ssi", $novoNome, $novoTipoUsuario, $usuarioId);
+                        
+                        if ($stmt->execute()) {
+                            // Atualização bem-sucedida
+                            $_SESSION['mensagem'] = 'Usuário atualizado com sucesso!';
+                        } else {
+                            // Erro na atualização
+                            $_SESSION['mensagem'] = 'Erro ao atualizar o usuário. Tente novamente.';
+                        }
+                    } else {
+                        // ID de usuário inválido
+                        $_SESSION['mensagem'] = 'ID de usuário inválido.';
+                    }
+                    
+                    // Redirecione de volta para a página de gerenciamento de usuários
+                    header('Location: ../templates/gerenciar_usuarios.php');
+                    exit();
+                } else {
+                    // Caso de acesso inválido
+                    header('Location: ../templates/gerenciar_usuarios.php');
+                    exit();
+                }
+                break;
+            
 
-        case 'excluir':
-            // Lógica para excluir um usuário
-            // Recupere o ID do usuário a ser excluído
-            // Exclua o usuário do banco de dados
-            // Redirecione o usuário para a página apropriada (sucesso ou erro)
-            break;
-        
-        // Outros casos para outras ações, se necessário
-        
-        default:
-            // Ação inválida, redirecione o usuário para uma página de erro
-            break;
+            case 'excluir':
+                if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+                    $usuarioId = $_GET['id'];
+                    
+                    // Verifique se o usuário existe antes de excluir
+                    $consulta = "SELECT id FROM usuarios WHERE id = ?";
+                    $stmt = $conexao->prepare($consulta);
+                    $stmt->bind_param("i", $usuarioId);
+                    $stmt->execute();
+                    $resultado = $stmt->get_result();
+                    
+                    if ($resultado->num_rows > 0) {
+                        // O usuário existe, execute a exclusão
+                        $consulta = "DELETE FROM usuarios WHERE id = ?";
+                        $stmt = $conexao->prepare($consulta);
+                        $stmt->bind_param("i", $usuarioId);
+                        
+                        if ($stmt->execute()) {
+                            // Exclusão bem-sucedida
+                            $_SESSION['mensagem'] = 'Usuário excluído com sucesso!';
+                        } else {
+                            // Erro na exclusão
+                            $_SESSION['mensagem'] = 'Erro ao excluir o usuário. Tente novamente.';
+                        }
+                    } else {
+                        // O usuário não existe
+                        $_SESSION['mensagem'] = 'Usuário não encontrado.';
+                    }
+                } else {
+                    // ID de usuário inválido
+                    $_SESSION['mensagem'] = 'ID de usuário inválido.';
+                }
+                
+                // Redirecione de volta para a página de gerenciamento de usuários
+                header('Location: ../templates/gerenciar_usuarios.php');
+                exit();
+                break;
+            
     }
-} else {
-    // Nenhuma ação definida, redirecione o usuário para uma página apropriada
-}
+
 ?>
 

@@ -25,6 +25,18 @@ $usuarios = listarUsuarios($conexao);
 
     <a href="cadastrar_usuario.php" class="btn btn-success mb-4">Cadastrar Novo Usuário</a>
 
+    <?php
+        session_start();
+
+        // Verifique se a variável de sessão 'mensagem' está definida
+        if (isset($_SESSION['mensagem'])) {
+            echo '<div class="alert alert-error">' . $_SESSION['mensagem'] . '</div>';
+
+            // Após exibir a mensagem, você pode removê-la para não exibi-la novamente na próxima página
+            unset($_SESSION['mensagem']);
+        }
+    ?>
+
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
@@ -41,7 +53,7 @@ $usuarios = listarUsuarios($conexao);
                         <td><?php echo $usuario['email']; ?></td>
                         <td>
                             <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editarUsuarioModal<?php echo $usuario['id']; ?>">Editar Cadastro</a>
-                            <a href="#" onclick="confirmarExclusao(<?php echo $usuario['id']; ?>);" class="btn btn-danger">Excluir Usuário</a>
+                            <a href="#" onclick="confirmarExclusao(<?php echo $usuario['id']; ?>, '<?php echo $usuario['nome']; ?>');" class="btn btn-danger">Excluir Usuário</a>
                         </td>
                     </tr>
                     <!-- Modal de Edição para o usuário atual -->
@@ -56,15 +68,15 @@ $usuarios = listarUsuarios($conexao);
                                 </div>
                                 <form action="../php/usuarios.php" method="post">
                                     <input type="hidden" name="action" value="editar">
-                                    <input type="hidden" name="editUserId" value="<?php echo $usuario['id']; ?>">
+                                    <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>"> <!-- Adicione este campo -->
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label for="editUserName<?php echo $usuario['id']; ?>">Nome do Usuário</label>
-                                            <input type="text" class="form-control" id="editUserName<?php echo $usuario['id']; ?>" name="editUserName" value="<?php echo $usuario['nome']; ?>" required>
+                                            <input type="text" class="form-control" id="editUserName<?php echo $usuario['id']; ?>" name="novo_nome" value="<?php echo $usuario['nome']; ?>" required>
                                         </div>
                                         <div class="form-group">
                                             <label for="editUserType<?php echo $usuario['id']; ?>">Tipo de Usuário</label>
-                                            <select id="editUserType<?php echo $usuario['id']; ?>" name="editUserType" class="form-control" required>
+                                            <select id="editUserType<?php echo $usuario['id']; ?>" name="novo_tipousuario" class="form-control" required>
                                                 <option value="padrao" <?php if ($usuario['tipousuario'] == 'padrao') echo 'selected'; ?>>Padrão</option>
                                                 <option value="administrador" <?php if ($usuario['tipousuario'] == 'administrador') echo 'selected'; ?>>Administrador</option>
                                             </select>
@@ -85,12 +97,13 @@ $usuarios = listarUsuarios($conexao);
 </div>
 
 <script>
-    function confirmarExclusao(usuarioId) {
-        if (confirm("Tem certeza de que deseja excluir este usuário?")) {
-            // Se o usuário confirmar, redirecione para usuarios.php com a ação de exclusão e o ID do usuário
-            window.location.href = "usuarios.php?action=excluir&id=" + usuarioId;
-        }
+    function confirmarExclusao(usuarioId, nomeUsuario) {
+    if (confirm("Tem certeza de que deseja excluir o usuário " + nomeUsuario + "? Essa ação não pode ser desfeita.")) {
+        // Se o usuário confirmar, redirecione para usuarios.php com a ação de exclusão e o ID do usuário
+        window.location.href = "../php/usuarios.php?action=excluir&id=" + usuarioId;
     }
+}
+
 </script>
 
 <?php
