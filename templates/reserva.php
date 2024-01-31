@@ -72,7 +72,7 @@ include('../includes/header.php');
             opens: 'center', // Define a posição do calendário
             autoApply: true, // Aplica automaticamente o intervalo selecionado
             locale: {
-                format: 'MM-DD-YYYY', // Formato da data
+                format: 'DD-MM-YYYY', // Formato da data
                 locale: "pt-br"
             },
         });
@@ -85,15 +85,14 @@ include('../includes/header.php');
             businessHours: true,
             select: function(info) {
                 // Quando o usuário selecionar um intervalo de datas, atualize o campo oculto
-                $('#selectedDates').val(info.start.format('YYYY-MM-DD') + ' até ' + info.end.format('YYYY-MM-DD'));
+                $('#selectedDates').val(info.start.format('DD-MM-YYYY') + ' - ' + info.end.format('DD-MM-YYYY'));
             },
             locale: 'pt-br'
         });
         calendar.render();
     });
 </script>
-<br>
-<br>
+
 <?php
 include('../includes/footer.php');
 ?>
