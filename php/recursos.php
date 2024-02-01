@@ -1,8 +1,6 @@
 User
 <?php
-//página de roteamento para ações de recursos
 include_once('conexao.php');
-// Verifique se uma ação foi definida
 
 session_start();
 
@@ -11,32 +9,25 @@ session_start();
        switch ($action) {
         
         case 'cadastrar':
-            // Verifique se os campos obrigatórios estão definidos
             if (isset($_POST['nome']) && isset($_POST['tipo'])) {
-                // Obtenha os dados do formulário
                 $nome = $_POST['nome'];
                 $tipo = $_POST['tipo'];
         
-                // Inicialize a quantidade de pessoas como NULL
                 $quantidade_pessoas = NULL;
         
-                // Se o tipo de recurso for "espaço", verifique e defina a quantidade de pessoas
                 if ($tipo === "espaço" && isset($_POST['quantidade_pessoas'])) {
                     $quantidade_pessoas = $_POST['quantidade_pessoas'];
         
-                    // Valide a quantidade de pessoas (por exemplo, verifique se é um número válido)
                 }
         
-                // Valide os dados, por exemplo, verificando se o tipo é válido
-        
-                // Insira os dados no banco de dados (usando declaração preparada para segurança)
+            
                 $sql = "INSERT INTO recursos (nome, tipo, quantidade_pessoas) VALUES (?, ?, ?)";
                 $stmt = $conexao->prepare($sql);
                 $stmt->bind_param("sss", $nome, $tipo, $quantidade_pessoas);
         
                 if ($stmt->execute()) {
-                    // Cadastro bem-sucedido, redirecione para uma página de sucesso ou de gerenciamento de recursos
-                    header('Location: cadastro_sucesso.php');
+                    $_SESSION['mensagem'] = 'Recurso cadastrado com sucesso.';
+                    header('Location: ../templates/gerenciar_recursos.php');
                     exit();
                 } else {
                     // Erro no cadastro, redirecione de volta ao formulário de cadastro
@@ -55,7 +46,39 @@ session_start();
         
         
         case 'excluir':
-                
+            if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+                $idRecurso = $_GET['id'];
+        
+                // Verifique se o recurso existe
+                $sqlVerificar = "SELECT id FROM recursos WHERE id = $idRecurso";
+                $resultVerificar = mysqli_query($conexao, $sqlVerificar);
+        
+                if (mysqli_num_rows($resultVerificar) > 0) {
+                    // O recurso existe, você pode prosseguir com a exclusão
+                    $sqlExcluir = "DELETE FROM recursos WHERE id = $idRecurso";
+                    if (mysqli_query($conexao, $sqlExcluir)) {
+                        // Recurso excluído com sucesso
+                        $_SESSION['mensagem'] = 'Recurso excluído com sucesso.';
+                        header('Location: ../templates/gerenciar_recursos.php');
+                        exit();
+                    } else {
+                        // Erro ao excluir o recurso
+                        $_SESSION['mensagem'] = 'Erro ao excluir o recurso.';
+                        header('Location: recursos.php');
+                        exit();
+                    }
+                } else {
+                    // O recurso não existe
+                    $_SESSION['mensagem'] = 'Recurso não encontrado.';
+                    header('Location: recursos.php');
+                    exit();
+                }
+            } else {
+                // ID inválido
+                $_SESSION['mensagem'] = 'ID de recurso inválido.';
+                header('Location: recursos.php');
+                exit();
+            }        
 
 
             break;

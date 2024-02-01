@@ -24,9 +24,13 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
     <a class="navbar-brand" href="/reservasenai/index.php">
+                
+        <?php if (isset($_SESSION['usuario_logado'])) : ?>
         <button class="btn btn-secondary">
                 Sistema de Reservas
         </button>
+        <?php endif; ?>
+
     </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
