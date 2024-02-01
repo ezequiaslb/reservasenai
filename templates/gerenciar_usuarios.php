@@ -56,8 +56,11 @@ $usuarios = listarUsuarios($conexao);
                         <td><?php echo $usuario['nome']; ?></td>
                         <td><?php echo $usuario['email']; ?></td>
                         <td>
+
                             <a href="#" class="btn btn-primary" data-toggle="modal" data-target="#editarUsuarioModal<?php echo $usuario['id']; ?>">Editar Cadastro</a>
+
                             <a href="#" onclick="confirmarExclusao(<?php echo $usuario['id']; ?>, '<?php echo $usuario['nome']; ?>');" class="btn btn-danger">Excluir Usuário</a>
+                            
                         </td>
                     </tr>
                     <!-- Modal de Edição para o usuário atual -->

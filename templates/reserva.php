@@ -24,13 +24,12 @@ if (!isset($_SESSION['usuario_logado'])) {
         ?>
         <div class="row">
             <div class="col-md-6">
-                <form action="processar_reserva.php" method="post">
+                <form action="../php/reservas.php" method="post">
                     <div class="form-group">
                     <label for="tipo">Tipo</label>
                     <select id="tipo" name="tipo" class="form-control" required>
-                        <option value="tipo1">Espaço</option>
-                        <option value="tipo2">Projetores</option>
-                        <option value="tipo3">Notebooks</option>
+                        <option value="espaço">Espaço</option>
+                        <option value="equipamento">Equipamento</option>
                     </select>
 
                     <label for="equipamento">Equipamento</label>

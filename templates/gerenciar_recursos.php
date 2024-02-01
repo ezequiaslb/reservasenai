@@ -79,7 +79,8 @@ $resultRecursos = mysqli_query($conexao, $sqlRecursos);
                     // Outras colunas
                     echo '<td>';
                     // Botão de exclusão que redireciona para excluir_recurso.php com o ID do recurso
-                    echo '<a href="../php/recursos.php?action=excluir&id=' . $rowRecurso['id'] . '" class="btn btn-danger">Excluir</a>';
+                    echo '<a href="javascript:void(0);" onclick="confirmarExclusao(' . $rowRecurso['id'] . ');" class="btn btn-danger">Excluir</a>';
+
                     echo '</td>';
                     echo '</tr>';
                 }
@@ -88,6 +89,16 @@ $resultRecursos = mysqli_query($conexao, $sqlRecursos);
         </table>
     </div>
 </div>
+
+    <script>
+    function confirmarExclusao(idRecurso) {
+        if (confirm('Tem certeza de que deseja excluir este recurso? Essa ação não pode ser desfeita.')) {
+            // Se o usuário confirmar a exclusão, redirecione para a página de exclusão com o ID do recurso
+            window.location.href = '../php/recursos.php?action=excluir&id=' + idRecurso;
+        }
+    }
+    </script>
+
 
 <?php
 // Inclua o rodapé da página
