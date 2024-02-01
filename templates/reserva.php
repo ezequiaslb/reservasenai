@@ -19,39 +19,38 @@ if (!isset($_SESSION['usuario_logado'])) {
                 echo '<div class="alert alert-danger text-center">' . $_SESSION['mensagem'] . '</div>';
                 unset($_SESSION['mensagem']);
             } 
-            
-    //var_dump($_SESSION['usuario_tipousuario']);
         ?>
+
         <div class="row">
             <div class="col-md-6">
-                <form action="../php/reservas.php" method="post">
+                <form action="processar_reserva.php" method="post">
                     <div class="form-group">
-                    <label for="tipo">Tipo</label>
-                    <select id="tipo" name="tipo" class="form-control" required>
-                        <option value="espaço">Espaço</option>
-                        <option value="equipamento">Equipamento</option>
-                    </select>
+                        <label for="tipo">Tipo</label>
+                        <select id="tipo" name="tipo" class="form-control" required>
+                            <option value="espaço">Espaço</option>
+                            <option value="equipamento">Equipamento</option>
+                        </select>
 
-                    <label for="equipamento">Equipamento</label>
-                    <select id="equipamento" name="equipamento" class="form-control" required>
-                        <option value="Equipamento 1">Equipamento 1</option>
-                        <option value="Equipamento 2">Equipamento 2</option>
-                        <option value="Equipamento 3">Equipamento 3</option>
-                    </select>
-                    <label for="horario">Horário</label>
-                    <select id="horario" name="horario" class="form-control" required>
-                        <option value="Matutino">Matutino</option>
-                        <option value="Vespertino">Vespertino</option>
-                        <option value="Noturno">Noturno</option>
-                    </select>
-                    <Label for="calendar">Intervalo de Datas</Label>
-                    <input type="text" id="calendar" name="calendar" class="form-control" required>
-                    <input type="hidden" id="selectedDates" name="selectedDates">
+                        <label for="recurso">Recurso</label>
+                        <select id="recurso" name="recurso" class="form-control" required>
+                            <option value="">Selecione um recurso</option>
+                            <!-- Os recursos serão preenchidos dinamicamente aqui -->
+                        </select>
 
-                    <button type="submit" class="btn btn-primary mt-4 mb-5">Reservar</button>
+                        <label for="horario">Horário</label>
+                        <select id="horario" name="horario" class="form-control" required>
+                            <option value="Matutino">Matutino</option>
+                            <option value="Vespertino">Vespertino</option>
+                            <option value="Noturno">Noturno</option>
+                        </select>
+
+                        <label for="calendar">Intervalo de Datas</label>
+                        <input type="text" id="calendar" name="calendar" class="form-control" required>
+                        <input type="hidden" id="selectedDates" name="selectedDates">
+
+                        <button type="submit" class="btn btn-primary mt-4 mb-5">Reservar</button>
                     </div>
                 </form>
-                
             </div>
         </div>
     </div>
@@ -104,8 +103,38 @@ if (!isset($_SESSION['usuario_logado'])) {
         });
         calendar.render();
     });
+//buscar recursos
+    $(document).ready(function() {
+    $('#tipo').change(function() {
+        var tipoSelecionado = $(this).val();
+      
+        // Realize uma solicitação AJAX para buscar os recursos correspondentes ao tipo
+        $.ajax({
+            url: '../php/buscar_recursos.php', // Substitua pelo nome do seu arquivo de script PHP
+            method: 'POST',
+            data: { tipo: tipoSelecionado },
+            dataType: 'json',
+            success: function(data) {
+                // Limpe o campo de seleção de recursos
+                $('#recurso').empty();
+                $('#recurso').append('<option value="">Selecione um recurso</option>');
+
+                // Preencha o campo de seleção de recursos com os recursos disponíveis
+                $.each(data, function(index, recurso) {
+                    $('#recurso').append('<option value="' + recurso.id + '">' + recurso.nome + '</option>');
+                });
+            },
+            error: function() {
+                console.error('Erro ao buscar recursos.');
+            }
+        });
+    });
+});
+
 </script>
 
+
 <?php
+
 include('../includes/footer.php');
 ?>
