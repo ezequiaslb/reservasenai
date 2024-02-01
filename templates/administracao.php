@@ -12,13 +12,7 @@ if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 
 
 <!-- Conteúdo da Página de Administração -->
 <div class="container mt-4">
-    <h1 class="mb-4">Administração</h1>
-
-    <!-- Links para Cadastro de Recursos e Usuários -->
-    <div class="mb-4">
-        <a href="gerenciar_recursos.php" class="btn btn-primary">Gerenciar Recursos</a>
-        <a href="gerenciar_usuarios.php" class="btn btn-success">Gerenciar Usuários</a>
-    </div>
+    <h1 class="mb-4 display-4">Administração</h1>
 
     <!-- Lista de Reservas Pendentes -->
     <h2>Reservas Pendentes</h2>

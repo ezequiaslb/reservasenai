@@ -10,7 +10,8 @@ if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 
 
 <div class="container mt-4">
 <h1>Cadastrar Recurso</h1>
-        <form action="recurso.php?action=cadastrar" method="post">
+        <form action="../php/recursos.php" method="post">
+        <input type="hidden" name="action" value="cadastrar">
             <div class="form-group">
                 <label for="nome">Nome do Recurso</label>
                 <input type="text" id="nome" name="nome" class="form-control" required>

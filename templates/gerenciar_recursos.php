@@ -12,9 +12,9 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_tipousuario'] !== 
 
 <!-- Conteúdo da Página de Gerenciamento de Recursos -->
 <div class="container mt-4">
-    <h1 class="mb-4">Gerenciar Recursos</h1>
+    <h1 class="mb-4 display-4">Gerenciar Recursos</h1>
 
-    <a href="cadastrar_recurso.php" class="btn btn-success mb-4">Cadastrar Novo recurso</a>
+    <a href="cadastrar_recurso.php" class="btn btn-info mb-4">Cadastrar Novo recurso</a>
 
 
     <!-- Lista de Recursos -->
@@ -39,8 +39,6 @@ if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_tipousuario'] !== 
                     echo '<td>' . $row['tipo'] . '</td>';
                     // Outras colunas
                     echo '<td>';
-                    // Botão de edição que redireciona para editar_recurso.php com o ID do recurso
-                    echo '<a href="editar_recurso.php?id=' . $row['id'] . '" class="btn btn-primary">Editar</a>';
                     // Botão de exclusão que redireciona para excluir_recurso.php com o ID do recurso
                     echo '<a href="excluir_recurso.php?id=' . $row['id'] . '" class="btn btn-danger">Excluir</a>';
                     echo '</td>';

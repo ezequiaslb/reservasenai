@@ -27,9 +27,9 @@ $usuarios = listarUsuarios($conexao);
 ?>
 
 <div class="container mt-4">
-    <h1 class="mb-4">Gerenciar Usuários</h1>
+    <h1 class="mb-4 display-4">Gerenciar Usuários</h1>
 
-    <a href="cadastrar_usuario.php" class="btn btn-success mb-4">Cadastrar Novo Usuário</a>
+    <a href="cadastrar_usuario.php" class="btn btn-info mb-4">Cadastrar Novo Usuário</a>
 
     <?php
         // Verifique se a variável de sessão 'mensagem' está definida

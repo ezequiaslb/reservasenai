@@ -39,6 +39,18 @@
                 </li>
                 <?php endif; ?>
 
+                <?php if (isset($_SESSION['usuario_logado']) && isset($_SESSION['usuario_tipousuario']) && $_SESSION['usuario_tipousuario'] === 'administrador') : ?>
+                 <li class="nav-item">
+                    <a class="nav-link" href="/reservasenai/templates/gerenciar_recursos.php">Recursos</a>
+                </li>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['usuario_logado']) && isset($_SESSION['usuario_tipousuario']) && $_SESSION['usuario_tipousuario'] === 'administrador') : ?>
+                 <li class="nav-item">
+                    <a class="nav-link" href="/reservasenai/templates/gerenciar_usuarios.php">Usuários</a>
+                </li>
+                <?php endif; ?>
+                
                 <?php if (isset($_SESSION['usuario_logado'])) : ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/reservasenai/templates/reserva.php">Reservas</a>
