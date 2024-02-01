@@ -2,10 +2,11 @@
 // Inclua o cabeçalho da página
 include('../includes/header.php');
 
-// Consulta SQL para buscar todos os recursos cadastrados
-// Substitua 'sua_tabela_recursos' pelo nome real da tabela de recursos em seu banco de dados
-$query = "SELECT * FROM sua_tabela_recursos";
-// Execute a consulta e recupere os recursos
+// Verifique se o usuário está logado e é um administrador
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_tipousuario'] !== 'administrador') {
+    header('Location: ../index.php');
+    exit();
+}
 
 ?>
 

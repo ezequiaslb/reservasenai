@@ -7,8 +7,6 @@ include('../includes/header.php');
     <h1 class="mb-4">Cadastro de Usuário</h1>
 
     <?php
-        session_start();
-
         // Verifique se a variável de sessão 'mensagem' está definida
         if (isset($_SESSION['mensagem'])) {
             echo '<div class="alert alert-error">' . $_SESSION['mensagem'] . '</div>';

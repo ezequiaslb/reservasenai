@@ -1,5 +1,11 @@
 <?php
 include('../includes/header.php');
+
+if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 'administrador') {
+    $_SESSION['mensagem'] = 'Acesso negado.';
+    header('Location: ../templates/reserva.php');
+    exit();
+}
 ?>
 
 <div class="container mt-4">

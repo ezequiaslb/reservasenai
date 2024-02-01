@@ -1,10 +1,10 @@
 <?php
-session_start();
 
 // Verificar se o usuário está autenticado
 if (!isset($_SESSION['usuario_logado'])) {
     // Exibir o formulário de login apenas se o usuário não estiver autenticado
     include('includes/header.php');
+    
     echo '
     <!-- Conteúdo da Página Inicial -->
     <div class="jumbotron">
@@ -27,12 +27,12 @@ if (!isset($_SESSION['usuario_logado'])) {
                 <div class="col-md-4">
                     <form action="php/login.php" method="post">
                         <div class="form-group">
-                            <label for="username" class="sr-only"></label>
-                            <input type="text" id="username" name="username" class="form-control" placeholder="Nome de Usuário" required>
+                            <label for="email" class="sr-only"></label>
+                            <input type="text" id="email" name="email" class="form-control" placeholder="E-mail" required>
                         </div>
                         <div class="form-group">
-                            <label for="password" class="sr-only"></label>
-                            <input type="password" id="password" name="password" class="form-control" placeholder="Senha" required>
+                            <label for="senha" class="sr-only"></label>
+                            <input type="password" id="senha" name="senha" class="form-control" placeholder="Senha" required>
                         </div>
                         <button type="submit" class="btn btn-primary mt-5">Entrar</button>
                     </form>

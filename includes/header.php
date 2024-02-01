@@ -1,3 +1,6 @@
+<?php 
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head> 
@@ -30,12 +33,23 @@
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
             <ul class="navbar-nav">
+                <?php if (isset($_SESSION['usuario_logado']) && isset($_SESSION['usuario_tipousuario']) && $_SESSION['usuario_tipousuario'] === 'administrador') : ?>
+                 <li class="nav-item">
+                    <a class="nav-link" href="/reservasenai/templates/administracao.php">Administração</a>
+                </li>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['usuario_logado'])) : ?>
                 <li class="nav-item">
                     <a class="nav-link" href="/reservasenai/templates/reserva.php">Reservas</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/reservasenai/templates/administracao.php">Administração</a>
-                </li>
+                <?php endif; ?>
+
+                <?php if (isset($_SESSION['usuario_logado'])) : ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/reservasenai/php/sair.php">Sair</a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

@@ -2,6 +2,12 @@
 include('../includes/header.php');
 include('../php/conexao.php'); 
 
+// Verifique se o usuário está logado e se é um administrador
+if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_tipousuario'] !== 'administrador') {
+    header('Location: ../index.php');
+    exit();
+}
+
 function listarUsuarios($conexao) {
     $usuarios = array();
     $sql = "SELECT * FROM usuarios";
@@ -26,8 +32,6 @@ $usuarios = listarUsuarios($conexao);
     <a href="cadastrar_usuario.php" class="btn btn-success mb-4">Cadastrar Novo Usuário</a>
 
     <?php
-        session_start();
-
         // Verifique se a variável de sessão 'mensagem' está definida
         if (isset($_SESSION['mensagem'])) {
             echo '<div class="alert alert-error">' . $_SESSION['mensagem'] . '</div>';

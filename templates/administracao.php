@@ -1,6 +1,13 @@
 <?php
 // Inclua o arquivo header.php para incluir a barra de navegação e os scripts necessários
 include('../includes/header.php');
+
+if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 'administrador') {
+    $_SESSION['mensagem'] = 'Acesso negado.';
+    header('Location: ../templates/reserva.php');
+    exit();
+}
+
 ?>
 
 <!-- Conteúdo da Página de Administração -->

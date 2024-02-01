@@ -1,6 +1,12 @@
 <?php
-// Inclua o arquivo header.php para incluir a barra de navegação e os scripts necessários
 include('../includes/header.php');
+
+if (!isset($_SESSION['usuario_logado'])) {
+    $_SESSION['mensagem'] = 'Acesso negado.';
+    header('Location: ../index.php');
+    exit();
+}
+
 ?>
 
 <!-- Conteúdo da Página de Reservas -->
@@ -8,6 +14,14 @@ include('../includes/header.php');
     <!-- Formulário para Nova Reserva -->
     <div class="container mt-2">
         <h1 class="mb-2">Reservar Sala ou Equipamento</h1>
+        <?php 
+            if (isset($_SESSION['mensagem'])) {
+                echo '<div class="alert alert-danger text-center">' . $_SESSION['mensagem'] . '</div>';
+                unset($_SESSION['mensagem']);
+            } 
+            
+    //var_dump($_SESSION['usuario_tipousuario']);
+        ?>
         <div class="row">
             <div class="col-md-6">
                 <form action="processar_reserva.php" method="post">
