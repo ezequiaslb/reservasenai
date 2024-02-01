@@ -1,5 +1,4 @@
 <?php
-// Inclua o arquivo header.php para incluir a barra de navegação e os scripts necessários
 include('../includes/header.php');
 
 if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 'administrador') {
@@ -10,15 +9,12 @@ if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 
 
 ?>
 
-<!-- Conteúdo da Página de Administração -->
 <div class="container mt-4">
     <h1 class="mb-4 display-4">Administração</h1>
 
-    <!-- Lista de Reservas Pendentes -->
     <h2>Reservas Pendentes</h2>
     <div class="table-responsive">
         <table class="table table-bordered">
-            <!-- Cabeçalho da tabela -->
             <thead>
                 <tr>
                     <th>ID da Reserva</th>
@@ -30,9 +26,7 @@ if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 
                     <th>Ações</th>
                 </tr>
             </thead>
-            <!-- Corpo da tabela -->
             <tbody>
-                <!-- Placeholder para listar as reservas pendentes -->
                 <tr>
                     <td>1</td>
                     <td>2024-01-31</td>
@@ -45,16 +39,13 @@ if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 
                         <button class="btn btn-danger">Rejeitar</button>
                     </td>
                 </tr>
-                <!-- Adicione mais linhas conforme necessário -->
             </tbody>
         </table>
     </div>
 
-    <!-- Lista de Reservas Aprovadas/Rejeitadas -->
     <h2>Reservas Aprovadas/Rejeitadas</h2>
     <div class="table-responsive">
         <table class="table table-bordered">
-            <!-- Cabeçalho da tabela -->
             <thead>
                 <tr>
                     <th>ID da Reserva</th>
@@ -65,9 +56,7 @@ if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 
                     <th>Status</th>
                 </tr>
             </thead>
-            <!-- Corpo da tabela -->
             <tbody>
-                <!-- Placeholder para listar as reservas aprovadas/rejeitadas -->
                 <tr>
                     <td>3</td>
                     <td>2024-02-05</td>
@@ -76,13 +65,11 @@ if (!isset($_SESSION['usuario_logado']) && $_SESSION['usuario_tipousuario'] !== 
                     <td>Usuário 3</td>
                     <td>Aprovada</td>
                 </tr>
-                <!-- Adicione mais linhas conforme necessário -->
             </tbody>
         </table>
     </div>
 </div>
 
 <?php
-// Inclua o arquivo footer.php para encerrar a página
 include('../includes/footer.php');
 ?>

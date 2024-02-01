@@ -6,12 +6,18 @@ if (!isset($_SESSION['usuario_logado'])) {
     header('Location: ../index.php');
     exit();
 }
-
+    include('../php/conexao.php');
+//depuração de erro
+    if (isset($_POST['tipo'])) {
+        $tipo = $_POST['tipo'];
+    
+        echo "O valor de 'tipo' é: " . $tipo;
+    } else {
+        echo "A variável 'tipo' não foi definida no formulário.";
+    }
 ?>
 
-<!-- Conteúdo da Página de Reservas -->
 <div class="container mt-2">
-    <!-- Formulário para Nova Reserva -->
     <div class="container mt-2">
         <h1 class="mb-2">Reservar Sala ou Equipamento</h1>
         <?php 
@@ -25,6 +31,7 @@ if (!isset($_SESSION['usuario_logado'])) {
             <div class="col-md-6">
                 <form action="processar_reserva.php" method="post">
                     <div class="form-group">
+
                         <label for="tipo">Tipo</label>
                         <select id="tipo" name="tipo" class="form-control" required>
                             <option value="espaço">Espaço</option>
@@ -34,7 +41,6 @@ if (!isset($_SESSION['usuario_logado'])) {
                         <label for="recurso">Recurso</label>
                         <select id="recurso" name="recurso" class="form-control" required>
                             <option value="">Selecione um recurso</option>
-                            <!-- Os recursos serão preenchidos dinamicamente aqui -->
                         </select>
 
                         <label for="horario">Horário</label>
@@ -54,8 +60,10 @@ if (!isset($_SESSION['usuario_logado'])) {
             </div>
         </div>
     </div>
+    <script>
+        console.log(tipoSelecionado);
+    </script>
 
-    <!-- Seção de Reservas Ativas -->
     <h2>Reservas Ativas</h2>
     <div class="row">
         <!-- Placeholder para listar as reservas ativas -->
@@ -79,62 +87,52 @@ if (!isset($_SESSION['usuario_logado'])) {
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Inicialize o Date Range Picker
         $('#calendar').daterangepicker({
-            opens: 'center', // Define a posição do calendário
-            autoApply: true, // Aplica automaticamente o intervalo selecionado
+            opens: 'center', 
+            autoApply: true, 
             locale: {
-                format: 'DD-MM-YYYY', // Formato da data
-                locale: "pt-br"
+                format: 'DD-MM-YYYY', 
             },
         });
 
-        // Inicialize o FullCalendar
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             selectable: true,
             businessHours: true,
             select: function(info) {
-                // Quando o usuário selecionar um intervalo de datas, atualize o campo oculto
                 $('#selectedDates').val(info.start.format('DD-MM-YYYY') + ' - ' + info.end.format('DD-MM-YYYY'));
             },
             locale: 'pt-br'
         });
         calendar.render();
     });
-//buscar recursos
+    var tipoSelecionado;
     $(document).ready(function() {
-    $('#tipo').change(function() {
-        var tipoSelecionado = $(this).val();
-      
-        // Realize uma solicitação AJAX para buscar os recursos correspondentes ao tipo
-        $.ajax({
-            url: '../php/buscar_recursos.php', // Substitua pelo nome do seu arquivo de script PHP
-            method: 'POST',
-            data: { tipo: tipoSelecionado },
-            dataType: 'json',
-            success: function(data) {
-                // Limpe o campo de seleção de recursos
-                $('#recurso').empty();
-                $('#recurso').append('<option value="">Selecione um recurso</option>');
+        $('#tipo').change(function() {
+            var tipoSelecionado = $(this).val();
+        
+            $.ajax({
+                url: '../php/buscar_recursos.php', 
+                method: 'POST',
+                data: { tipo: tipoSelecionado },
+                dataType: 'json',
+                success: function(data) {
+                    $('#recurso').empty();
+                    $('#recurso').append('<option value="">Selecione um recurso</option>');
 
-                // Preencha o campo de seleção de recursos com os recursos disponíveis
-                $.each(data, function(index, recurso) {
-                    $('#recurso').append('<option value="' + recurso.id + '">' + recurso.nome + '</option>');
-                });
-            },
-            error: function() {
-                console.error('Erro ao buscar recursos.');
-            }
+                    $.each(data, function(index, recurso) {
+                        $('#recurso').append('<option value="' + recurso.id + '">' + recurso.nome + '</option>');
+                    });
+                },
+                error: function() {
+                    console.error('Erro ao buscar recursos.');
+                }
+            });
         });
     });
-});
-
 </script>
 
-
 <?php
-
-include('../includes/footer.php');
+   include('../includes/footer.php');
 ?>

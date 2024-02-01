@@ -89,28 +89,27 @@ session_start();
                     $resultado = $stmt->get_result();
                     
                     if ($resultado->num_rows > 0) {
-                        // O usuário existe, execute a exclusão
+           
                         $consulta = "DELETE FROM usuarios WHERE id = ?";
                         $stmt = $conexao->prepare($consulta);
                         $stmt->bind_param("i", $usuarioId);
                         
                         if ($stmt->execute()) {
-                            // Exclusão bem-sucedida
+                   
                             $_SESSION['mensagem'] = 'Usuário excluído com sucesso!';
                         } else {
-                            // Erro na exclusão
+                       
                             $_SESSION['mensagem'] = 'Erro ao excluir o usuário. Tente novamente.';
                         }
                     } else {
-                        // O usuário não existe
+                       
                         $_SESSION['mensagem'] = 'Usuário não encontrado.';
                     }
                 } else {
-                    // ID de usuário inválido
+                    
                     $_SESSION['mensagem'] = 'ID de usuário inválido.';
                 }
                 
-                // Redirecione de volta para a página de gerenciamento de usuários
                 header('Location: ../templates/gerenciar_usuarios.php');
                 exit();
                 break;

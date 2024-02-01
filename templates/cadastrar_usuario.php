@@ -7,11 +7,9 @@ include('../includes/header.php');
     <h1 class="mb-4">Cadastro de Usuário</h1>
 
     <?php
-        // Verifique se a variável de sessão 'mensagem' está definida
         if (isset($_SESSION['mensagem'])) {
             echo '<div class="alert alert-error">' . $_SESSION['mensagem'] . '</div>';
 
-            // Após exibir a mensagem, você pode removê-la para não exibi-la novamente na próxima página
             unset($_SESSION['mensagem']);
         }
     ?>
@@ -24,7 +22,7 @@ include('../includes/header.php');
         <div class="form-group">
             <label for="email">Email</label>
             <input type="email" class="form-control" id="email" name="email" required>
-            <div class="btn-danger center" id="email-availability-message"></div><!-- Aqui exibiremos a mensagem de disponibilidade do email -->
+            <div class="btn-danger center" id="email-availability-message"></div>
         </div>
         <div class="form-group">
             <label for="tipousuario">Tipo de Usuário</label>
@@ -39,20 +37,18 @@ include('../includes/header.php');
         </div>
         <input type="hidden" name="action" value="cadastrar">
 
-        <!-- Outros campos do usuário, se necessário -->
         <button type="submit" class="btn btn-primary">Cadastrar</button>
     </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 $(document).ready(function() {
-    $('#email').on('blur', function() { // Verificar quando o usuário sai do campo de email
+    $('#email').on('blur', function() {
         var email = $(this).val();
         
         if (email) {
             $.ajax({
-                url: '../php/verificar_disponibilidade.php', // Script PHP que verificará o email
+                url: '../php/verificar_disponibilidade.php',
                 type: 'POST',
                 data: {email: email},
                 success: function(response) {

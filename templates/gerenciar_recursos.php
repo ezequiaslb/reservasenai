@@ -1,24 +1,18 @@
 <?php
-// Inclua o cabeçalho da página
 include('../includes/header.php');
 
-// Verifique se o usuário está logado e é um administrador
 if (!isset($_SESSION['usuario_logado']) || $_SESSION['usuario_tipousuario'] !== 'administrador') {
     header('Location: ../index.php');
     exit();
 }
 
-// Inclua o arquivo de conexão com o banco de dados
 include('../php/conexao.php');
 
-// Consulte o banco de dados para obter a lista de tipos de recurso
 $sqlTipos = "SELECT DISTINCT tipo FROM recursos";
 $resultTipos = mysqli_query($conexao, $sqlTipos);
 
-// Inicialize a variável de filtro
 $tipoFiltro = isset($_GET['tipo']) ? $_GET['tipo'] : '';
 
-// Consulte o banco de dados para obter a lista de recursos com base no tipo selecionado
 $sqlRecursos = "SELECT * FROM recursos";
 if (!empty($tipoFiltro)) {
     $sqlRecursos .= " WHERE tipo = '$tipoFiltro'";
@@ -27,7 +21,6 @@ $resultRecursos = mysqli_query($conexao, $sqlRecursos);
 
 ?>
 
-<!-- Conteúdo da Página de Gerenciamento de Recursos -->
 <div class="container mt-4">
     <h1 class="mb-4 display-4">Gerenciar Recursos</h1>
 
@@ -51,13 +44,11 @@ $resultRecursos = mysqli_query($conexao, $sqlRecursos);
         <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
     <?php 
-    // Verifique se há uma mensagem para exibir
     if (isset($_SESSION['mensagem'])) {
         echo '<div class="alert alert-info text-center">' . $_SESSION['mensagem'] . '</div>';
         unset($_SESSION['mensagem']);
     }
     ?>
-    <!-- Lista de Recursos -->
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead>
@@ -70,15 +61,12 @@ $resultRecursos = mysqli_query($conexao, $sqlRecursos);
             </thead>
             <tbody>
                 <?php
-                // Loop para exibir todos os recursos
                 while ($rowRecurso = mysqli_fetch_assoc($resultRecursos)) {
                     echo '<tr>';
                     echo '<td>' . $rowRecurso['nome'] . '</td>';
                     echo '<td>' . $rowRecurso['tipo'] . '</td>';
                     echo '<td>' . $rowRecurso['quantidade_pessoas'] . '</td>';
-                    // Outras colunas
                     echo '<td>';
-                    // Botão de exclusão que redireciona para excluir_recurso.php com o ID do recurso
                     echo '<a href="javascript:void(0);" onclick="confirmarExclusao(' . $rowRecurso['id'] . ');" class="btn btn-danger">Excluir</a>';
 
                     echo '</td>';
@@ -93,7 +81,6 @@ $resultRecursos = mysqli_query($conexao, $sqlRecursos);
     <script>
     function confirmarExclusao(idRecurso) {
         if (confirm('Tem certeza de que deseja excluir este recurso? Essa ação não pode ser desfeita.')) {
-            // Se o usuário confirmar a exclusão, redirecione para a página de exclusão com o ID do recurso
             window.location.href = '../php/recursos.php?action=excluir&id=' + idRecurso;
         }
     }
@@ -101,9 +88,7 @@ $resultRecursos = mysqli_query($conexao, $sqlRecursos);
 
 
 <?php
-// Inclua o rodapé da página
 include('../includes/footer.php');
 
-// Feche a conexão com o banco de dados
 mysqli_close($conexao);
 ?>

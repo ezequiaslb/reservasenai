@@ -17,30 +17,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->bind_result($id, $dbnome, $dbEmail, $dbSenha, $tipousuario);
         $stmt->fetch();
 
-        // Verificar a senha usando password_verify
+    
         if (password_verify($senha, $dbSenha)) {
-            // Login bem-sucedido
+        
             $_SESSION['usuario_logado'] = true;
             $_SESSION['usuario_nome'] = $dbnome;
             $_SESSION['usuario_id'] = $id;
             $_SESSION['usuario_email'] = $dbEmail;
             $_SESSION['usuario_tipousuario'] = $tipousuario;
 
-            // Redirecionar com base no tipo de usuário
             if ($tipousuario === 'administrador') {
-                header('Location: ../templates/administracao.php'); // Redirecionar para a página de administrador
+                header('Location: ../templates/administracao.php'); 
             } else {
-                header('Location: ../templates/reserva.php'); // Redirecionar para a página de reservas padrão
+                header('Location: ../templates/reserva.php');
             }
         } else {
-            // Senha incorreta
+           
             $_SESSION['mensagem'] = 'Senha incorreta. Tente novamente.';
-            header('Location: ../index.php'); // Redirecionar de volta para a página de login
+            header('Location: ../index.php'); 
         }
     } else {
-        // Email não encontrado no banco de dados
+        
         $_SESSION['mensagem'] = 'Email não encontrado. Tente novamente ou crie uma conta.';
-        header('Location: ../index.php'); // Redirecionar de volta para a página de login
+        header('Location: ../index.php'); 
     }
 
     $stmt->close();
