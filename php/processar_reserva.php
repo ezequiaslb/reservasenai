@@ -1,31 +1,58 @@
 <?php
 
-// Check if the form is submitted
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+session_start();
+include('../php/conexao.php');
 
-    include_once('conexao.php');
 
-    // Retrieve form data
-    $name = $_POST['name'];
-    $email = $_POST['email'];
-    $date = $_POST['date'];
-    $time = $_POST['time'];
+$tipo = filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$recurso = filter_input(INPUT_POST, 'recurso', FILTER_VALIDATE_INT);
+$horario = filter_input(INPUT_POST, 'horario', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+$selectedDates = filter_input(INPUT_POST, 'calendar', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-          // Prepare and execute the SQL statement to insert the reservation data into the database
-        $stmt = $conn->prepare("INSERT INTO reservations (name, email, date, time) VALUES (?, ?, ?, ?)");
-        $stmt->bind_param("ssss", $name, $email, $date, $time);
-        $stmt->execute();
 
-        // Close the statement and connection
-        $stmt->close();
-        $conn->close();
+if (empty($tipo) || empty($recurso) || empty($horario) || empty($selectedDates)) {
+    $_SESSION['mensagem'] = 'Preencha todos os campos.';
+    header("Location: ../templates/reserva.php");
+    exit();
+}
 
-        // Redirect to a success page
-        header('Location: success.php');
-        exit;
+if (!$recurso) {
+    $_SESSION['mensagem'] = 'Recurso inválido.';
+    header("Location: ../templates/reserva.php");
+    exit();
+}
+
+$datesArray = explode(" - ", $selectedDates);
+
+    $data_inicio = $datesArray[0]; // Primeira data
+    $data_fim = $datesArray[1];    // Segunda data
+
+    /*var_dump($data_inicio);
+    var_dump($data_fim);
+    exit();*/
+
+$query = "INSERT INTO reservas (recursos_id, usuario_id, data_inicio, data_fim, horario, status) VALUES (?, ?, ?, ?, ?, 'ativa')";
+$stmt = $conexao->prepare($query);
+
+if ($stmt) {
+    
+    $usuario_id = $_SESSION['usuario_id'];
+
+    $stmt->bind_param("iisss", $recurso, $usuario_id, $data_inicio, $data_fim, $horario);
+    $stmt->execute();
+
+    if ($stmt->affected_rows > 0) {
+        $_SESSION['mensagem'] = 'Reserva realizada com sucesso!';
+        header("Location: ../templates/reserva.php");
+        exit();
+    } else {
+        $_SESSION['mensagem'] = 'Erro ao realizar a reserva. Tente novamente.';
+        header("../templates/reserva.php");
+        exit();
     }
-
-    // If the form is not submitted, redirect to the reservation page
-    header('Location: ../templates/reserva.php');
-    exit;
-    ?>
+} else {
+    $_SESSION['mensagem'] = 'Erro ao realizar a reserva. Tente novamente.';
+    header("../templates/reserva.php");
+    exit();
+}
+?>

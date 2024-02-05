@@ -7,14 +7,7 @@ if (!isset($_SESSION['usuario_logado'])) {
     exit();
 }
 include('../php/conexao.php');
-/*depuração de erro
-    if (isset($_POST['tipo'])) {
-        $tipo = $_POST['tipo'];
-    
-        echo "O valor de 'tipo' é: " . $tipo;
-    } else {
-        echo "A variável 'tipo' não foi definida no formulário.";
-    }*/
+
 ?>
 
 <div class="container mt-2">
