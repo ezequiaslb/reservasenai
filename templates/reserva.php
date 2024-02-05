@@ -6,15 +6,15 @@ if (!isset($_SESSION['usuario_logado'])) {
     header('Location: ../index.php');
     exit();
 }
-    include('../php/conexao.php');
-//depuração de erro
+include('../php/conexao.php');
+/*depuração de erro
     if (isset($_POST['tipo'])) {
         $tipo = $_POST['tipo'];
     
         echo "O valor de 'tipo' é: " . $tipo;
     } else {
         echo "A variável 'tipo' não foi definida no formulário.";
-    }
+    }*/
 ?>
 
 <div class="container mt-2">
@@ -60,9 +60,6 @@ if (!isset($_SESSION['usuario_logado'])) {
             </div>
         </div>
     </div>
-    <script>
-        console.log(tipoSelecionado);
-    </script>
 
     <h2>Reservas Ativas</h2>
     <div class="row">
@@ -86,51 +83,54 @@ if (!isset($_SESSION['usuario_logado'])) {
     </div>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        $('#calendar').daterangepicker({
-            opens: 'center', 
-            autoApply: true, 
-            locale: {
-                format: 'DD-MM-YYYY', 
-            },
-        });
+    var tipoSelecionado; // Declaração global
 
-        var calendarEl = document.getElementById('calendar');
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'dayGridMonth',
-            selectable: true,
-            businessHours: true,
-            select: function(info) {
-                $('#selectedDates').val(info.start.format('DD-MM-YYYY') + ' - ' + info.end.format('DD-MM-YYYY'));
-            },
-            locale: 'pt-br'
-        });
-        calendar.render();
+document.addEventListener('DOMContentLoaded', function() {
+    $('#calendar').daterangepicker({
+        opens: 'center', 
+        autoApply: true, 
+        locale: {
+            format: 'DD-MM-YYYY', 
+        },
     });
-    var tipoSelecionado;
-    $(document).ready(function() {
-        $('#tipo').change(function() {
-            var tipoSelecionado = $(this).val();
-        
-            $.ajax({
-                url: '../php/buscar_recursos.php', 
-                method: 'POST',
-                data: { tipo: tipoSelecionado },
-                dataType: 'json',
-                success: function(data) {
-                    $('#recurso').empty();
-                    $('#recurso').append('<option value="">Selecione um recurso</option>');
 
-                    $.each(data, function(index, recurso) {
-                        $('#recurso').append('<option value="' + recurso.id + '">' + recurso.nome + '</option>');
-                    });
-                },
-                error: function() {
-                    console.error('Erro ao buscar recursos.');
-                }
-            });
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        selectable: true,
+        businessHours: true,
+        select: function(info) {
+            $('#selectedDates').val(info.start.format('DD-MM-YYYY') + ' - ' + info.end.format('DD-MM-YYYY'));
+        },
+        locale: 'pt-br'
+    });
+    calendar.render();
+});
+
+$(document).ready(function() {
+    $('#tipo').change(function() {
+        tipoSelecionado = $(this).val(); // Atribuição à variável global
+
+        $.ajax({
+            url: '../php/buscar_recursos.php', 
+            method: 'GET',
+            data: { tipo: tipoSelecionado },
+            dataType: 'json',
+            success: function(data) {
+                $('#recurso').empty();
+                $('#recurso').append('<option value="">Selecione um recurso</option>');
+
+                $.each(data, function(index, recurso) {
+                    $('#recurso').append('<option value="' + recurso.id + '">' + recurso.nome + '</option>');
+                });
+            },
+            error: function() {
+                console.error('Erro ao buscar recursos.');
+            }
         });
     });
+});
+
 </script>
 
 <?php

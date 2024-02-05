@@ -8,6 +8,7 @@ session_start();
     $action = isset($_POST['action']) ? $_POST['action'] : (isset($_GET['action']) ? $_GET['action'] : null);
 
        switch ($action) {
+        
         case 'cadastrar':
             if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'cadastrar') {
                 // Recupere os dados do formulário
