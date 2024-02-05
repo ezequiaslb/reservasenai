@@ -29,11 +29,12 @@ include('../php/conexao.php');
 
         <div class="row">
             <div class="col-md-6">
-                <form action="processar_reserva.php" method="post">
+                <form action="../php/processar_reserva.php" method="post">
                     <div class="form-group">
 
                         <label for="tipo">Tipo</label>
                         <select id="tipo" name="tipo" class="form-control" required>
+                            <option value="">Selecione um tipo</option>
                             <option value="espaço">Espaço</option>
                             <option value="equipamento">Equipamento</option>
                         </select>
