@@ -57,25 +57,37 @@ include('../php/conexao.php');
 
     <h2>Reservas Ativas</h2>
     <div class="row">
-        <!-- Placeholder para listar as reservas ativas -->
-        <div class="col-md-6">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Reserva Ativa 1</h5>
-                    <p class="card-text">Informações da reserva...</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <h5 class="card-title">Reserva Ativa 2</h5>
-                    <p class="card-text">Informações da reserva...</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php 
+    include('../php/conexao.php');
+    
+    $query = "SELECT r.nome AS nome_recurso, r.tipo AS tipo_recurso, 
+                     rs.data_inicio, rs.data_fim, rs.horario, rs.status
+              FROM reservas rs
+              INNER JOIN recursos r ON rs.recursos_id = r.id
+              WHERE rs.status = 'ativa'";
+    $result = mysqli_query($conexao, $query);
+    
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            echo '<div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Reserva Ativa</h5>
+                        <p class="card-text">' . $row['nome_recurso'] . '</p>
+                        <p class="card-text">' . $row['tipo_recurso'] . '</p>
+                        <p class="card-text">' . $row['data_inicio'] . '</p>
+                        <p class="card-text">' . $row['data_fim'] . '</p>
+                        <p class="card-text">' . $row['horario'] . '</p>
+                        <p class="card-text">' . $row['status'] . '</p>
+                    </div>
+                </div>';
+        }
+    } else {
+        echo '<div class="alert alert-info text-center">Nenhuma reserva ativa.</div>';
+    }
+    ?>    
 </div>
+    
+
 <script>
     var tipoSelecionado; // Declaração global
 
