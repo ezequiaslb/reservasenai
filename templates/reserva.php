@@ -12,7 +12,7 @@ include('../php/conexao.php');
 
 <div class="container mt-2">
     <div class="container mt-2">
-        <h1 class="mb-2">Reservar Sala ou Equipamento</h1>
+        <h1 class="mb-2 display-4">Reservar Sala ou Equipamento</h1>
         <?php 
             if (isset($_SESSION['mensagem'])) {
                 echo '<div class="alert alert-danger text-center">' . $_SESSION['mensagem'] . '</div>';
@@ -55,36 +55,61 @@ include('../php/conexao.php');
         </div>
     </div>
 
-    <h2>Reservas Ativas</h2>
+    <h2 class="display-4">Reservas</h2>
     <div class="row">
-    <?php 
-    include('../php/conexao.php');
-    
-    $query = "SELECT r.nome AS nome_recurso, r.tipo AS tipo_recurso, 
-                     rs.data_inicio, rs.data_fim, rs.horario, rs.status
-              FROM reservas rs
-              INNER JOIN recursos r ON rs.recursos_id = r.id
-              WHERE rs.status = 'ativa'";
-    $result = mysqli_query($conexao, $query);
-    
-    if (mysqli_num_rows($result) > 0) {
-        while ($row = mysqli_fetch_assoc($result)) {
-            echo '<div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">Reserva Ativa</h5>
-                        <p class="card-text">' . $row['nome_recurso'] . '</p>
-                        <p class="card-text">' . $row['tipo_recurso'] . '</p>
-                        <p class="card-text">' . $row['data_inicio'] . '</p>
-                        <p class="card-text">' . $row['data_fim'] . '</p>
-                        <p class="card-text">' . $row['horario'] . '</p>
-                        <p class="card-text">' . $row['status'] . '</p>
-                    </div>
-                </div>';
+<?php
+include('../php/conexao.php');
+
+$query = "SELECT r.nome AS nome_recurso, r.tipo AS tipo_recurso, 
+                rs.id, rs.data_inicio, rs.data_fim, rs.horario, rs.status
+          FROM reservas rs
+          INNER JOIN recursos r ON rs.recursos_id = r.id
+          WHERE rs.usuario_id = {$_SESSION['usuario_id']}
+          ORDER BY rs.data_criacao DESC
+          ";
+$result = mysqli_query($conexao, $query);
+
+if (mysqli_num_rows($result) > 0) {
+    echo '<div class="card-deck">';
+    while ($row = mysqli_fetch_assoc($result)) {
+        // Determina a classe com base no status
+        $statusClass = '';
+        switch ($row['status']) {
+            case 'pendente':
+                $statusClass = 'status-pendente';
+                break;
+            case 'ativa':
+                $statusClass = 'status-ativa';
+                break;
+            case 'concluída':
+                $statusClass = 'status-concluida';
+                break;
+            case 'cancelada':
+                $statusClass = 'status-cancelada';
+                break;
         }
-    } else {
-        echo '<div class="alert alert-info text-center">Nenhuma reserva ativa.</div>';
+        $data_inicio = date('d/m/Y', strtotime($row['data_inicio']));
+        $data_fim = date('d/m/Y', strtotime($row['data_fim'])); 
+
+        echo '<div class="card mb-3">
+                <div class="card-body ' . $statusClass . '">
+                    <h3 class="card-text display-6">' . $row['nome_recurso'] . '</h3>               
+                    <p class="card-text">Data de Início: ' . $data_inicio . '</p>
+                    <p class="card-text">Data de Fim: ' . $data_fim . '</p>
+                    <p class="card-text">Horário: ' . $row['horario'] . '</p>
+                    <p class="card-text">Status: ' . $row['status'] . '</p>
+                    <a href="cancelar_reserva.php?id=' . $row['id'] . '" class="btn btn-danger">Cancelar Reserva</a>
+                    <!-- Outras informações da reserva aqui -->
+                </div>
+            </div>';
     }
-    ?>    
+    echo '</div>'; // Fecha a card-deck
+} else {
+    echo '<div class="alert alert-info text-center">Nenhuma reserva ativa.</div>';
+}
+?>
+
+    
 </div>
     
 

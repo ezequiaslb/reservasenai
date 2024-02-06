@@ -24,14 +24,18 @@ if (!$recurso) {
 
 $datesArray = explode(" - ", $selectedDates);
 
-    $data_inicio = $datesArray[0]; // Primeira data
-    $data_fim = $datesArray[1];    // Segunda data
+    // Formate as datas no formato "AAAA-MM-DD"
+    $data_inicio = date('Y-m-d', strtotime($datesArray[0]));
+    $data_fim = date('Y-m-d', strtotime($datesArray[1]));
 
-    /*var_dump($data_inicio);
-    var_dump($data_fim);
-    exit();*/
+    // Verifique se a data de início é menor que a data de fim
+    if ($data_inicio > $data_fim) {
+        $_SESSION['mensagem'] = 'Data de início maior que a data de fim.';
+        header("Location: ../templates/reserva.php");
+        exit();
+    }    
 
-$query = "INSERT INTO reservas (recursos_id, usuario_id, data_inicio, data_fim, horario, status) VALUES (?, ?, ?, ?, ?, 'ativa')";
+$query = "INSERT INTO reservas (recursos_id, usuario_id, data_inicio, data_fim, horario, status) VALUES (?, ?, ?, ?, ?, 'pendente')";
 $stmt = $conexao->prepare($query);
 
 if ($stmt) {
