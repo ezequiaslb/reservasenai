@@ -1,12 +1,12 @@
 <?php
-include('../includes/header.php');
+include ('../includes/header.php');
 
 if (!isset($_SESSION['usuario_logado'])) {
     $_SESSION['mensagem'] = 'Acesso negado.';
     header('Location: ../index.php');
     exit();
 }
-include('../php/conexao.php');
+include ('../php/conexao.php');
 
 ?>
 
@@ -55,61 +55,65 @@ include('../php/conexao.php');
         </div>
     </div>
 
-    <h2 class="display-4">Reservas</h2>
-    <div class="row">
-<?php
-include('../php/conexao.php');
+    <h2 class="display-4 ">Suas Reservas</h2>
+<div class="row">
+    <?php
+    include('../php/conexao.php');
 
-$query = "SELECT r.nome AS nome_recurso, r.tipo AS tipo_recurso, 
-                rs.id, rs.data_inicio, rs.data_fim, rs.horario, rs.status
-          FROM reservas rs
-          INNER JOIN recursos r ON rs.recursos_id = r.id
-          WHERE rs.usuario_id = {$_SESSION['usuario_id']}
-          ORDER BY rs.data_criacao DESC
-          ";
-$result = mysqli_query($conexao, $query);
+    $query = "SELECT r.nome AS nome_recurso, r.tipo AS tipo_recurso, 
+                    rs.id, rs.data_inicio, rs.data_fim, rs.horario, rs.status
+              FROM reservas rs
+              INNER JOIN recursos r ON rs.recursos_id = r.id
+              WHERE rs.usuario_id = {$_SESSION['usuario_id']}
+              ORDER BY rs.data_criacao DESC
+              ";
+    $result = mysqli_query($conexao, $query);
 
-if (mysqli_num_rows($result) > 0) {
-    echo '<div class="card-deck">';
-    while ($row = mysqli_fetch_assoc($result)) {
-        // Determina a classe com base no status
-        $statusClass = '';
-        switch ($row['status']) {
-            case 'pendente':
-                $statusClass = 'status-pendente';
-                break;
-            case 'ativa':
-                $statusClass = 'status-ativa';
-                break;
-            case 'concluída':
-                $statusClass = 'status-concluida';
-                break;
-            case 'cancelada':
-                $statusClass = 'status-cancelada';
-                break;
-        }
-        $data_inicio = date('d/m/Y', strtotime($row['data_inicio']));
-        $data_fim = date('d/m/Y', strtotime($row['data_fim'])); 
+    if (mysqli_num_rows($result) > 0) {
+        while ($row = mysqli_fetch_assoc($result)) {
+            // Determina a classe com base no status
+            $statusClass = '';
+            switch ($row['status']) {
+                case 'pendente':
+                    $statusClass = 'bg-warning';
+                    break;
+                case 'ativa':
+                    $statusClass = 'bg-success';
+                    break;
+                case 'concluída':
+                    $statusClass = 'bg-primary';
+                    break;
+                case 'cancelada':
+                    $statusClass = 'bg-danger';
+                    break;
+            }
+            $data_inicio = date('d/m/Y', strtotime($row['data_inicio']));
+            $data_fim = date('d/m/Y', strtotime($row['data_fim']));
+            $statusFormatado = ucfirst($row['status']);
+    ?>
 
-        echo '<div class="card mb-3">
-                <div class="card-body ' . $statusClass . '">
-                    <h3 class="card-text display-6">' . $row['nome_recurso'] . '</h3>               
-                    <p class="card-text">Data de Início: ' . $data_inicio . '</p>
-                    <p class="card-text">Data de Fim: ' . $data_fim . '</p>
-                    <p class="card-text">Horário: ' . $row['horario'] . '</p>
-                    <p class="card-text">Status: ' . $row['status'] . '</p>
-                    <a href="cancelar_reserva.php?id=' . $row['id'] . '" class="btn btn-danger">Cancelar Reserva</a>
-                    <!-- Outras informações da reserva aqui -->
+            <div class="col-md-4 mb-4">
+                <div class="card <?php echo $statusClass; ?> text-white">
+                <h3 class="card-header"><?php echo $row['nome_recurso']; ?></h3>
+                        <div class="card-body">
+                        <p class="card-text lead">Status: <?php echo $statusFormatado; ?></p>
+                        <p class="card-text lead">Data de Início: <?php echo $data_inicio; ?></p>
+                        <p class="card-text lead">Data de Fim: <?php echo $data_fim; ?></p>
+                        <p class="card-text lead">Horário: <?php echo $row['horario']; ?></p>
+                        <button class="btn btn-light" onclick="confirmarCancelamento(<?php echo $row['id']; ?>)">Cancelar Reserva</button>
+
+                        <!-- Outras informações da reserva aqui -->
+                    </div>
                 </div>
-            </div>';
+            </div>
+    <?php
+        }
+    } else {
+        echo '<div class="alert alert-info text-center">Nenhuma reserva ativa.</div>';
     }
-    echo '</div>'; // Fecha a card-deck
-} else {
-    echo '<div class="alert alert-info text-center">Nenhuma reserva ativa.</div>';
-}
-?>
+    ?>
+</div>
 
-    
 </div>
     
 
@@ -161,6 +165,30 @@ $(document).ready(function() {
         });
     });
 });
+
+
+function confirmarCancelamento(reservaId) {
+    if (confirm('Tem certeza de que deseja cancelar esta reserva?')) {
+        $.ajax({
+            url: '../php/cancelar_reserva.php',
+            method: 'GET',
+            data: { reserva_id: reservaId },
+            dataType: 'json', 
+            success: function(response) {
+                if (response === 'sucesso') {
+                    alert('Reserva cancelada com sucesso!');
+                    window.location.reload();
+                } else {
+                    alert('Reserva cancelada com sucesso!');
+                    window.location.reload();
+                }
+            },
+            error: function() {
+                alert('Erro ao cancelar a reserva. Tente novamente.não foi h1h1');
+            }
+        });
+    }
+}
 
 </script>
 
